@@ -1,0 +1,36 @@
+name: 'Your name here'
+description: 'Provide a description here'
+author: 'Your name or organization here'
+inputs:
+  github-token:
+    description: 'GitHub Token as provided by secrets'
+    default: ${{ github.token }}
+    required: true
+  major-label:
+    description: 'Label to use for major version bump'
+    default: 'change'
+    required: false
+  minor-label:
+    description: 'Label to use for minor version bump'
+    default: 'enhancement'
+    required: false
+  notes-header:
+    description: 'Header to use for changelog'
+    default: ''
+    required: false
+  notes-footer:
+    description: 'Footer to use for changelog'
+    default: ''
+    required: false
+outputs:
+  version:
+    description: 'The version of the release'
+  release-notes:
+    description: 'The release notes for the release'
+  release-url:
+    description: 'The URL of the release'
+  release-id:
+    description: 'The ID of the release'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

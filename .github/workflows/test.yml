@@ -1,0 +1,37 @@
+name: 'build-test'
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  build: # make sure build/ci work properly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          npm install
+      - run: |
+          npm run all
+  test: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        id: draft-release
+        with:
+          notes-header: |
+            ## Welcome to the %TAG% release of Draft Release
+              This is some text to welcome you to the release %TAG_STRIPPED%.
+          notes-footer: |
+            ## Upgrade
+            - For Docker, use the %TAG% image from Docker Hub.
+            - For Binaries use the %TAG_STRIPPED% release from GitHub.
+
+      - run: |
+          echo "Version: ${{ steps.draft-release.outputs.version }}"
+          echo "Release Notes: ${{ steps.draft-release.outputs.release-notes }}"
+          echo "Release URL: ${{ steps.draft-release.outputs.release-url }}"
+          echo "Release ID: ${{ steps.draft-release.outputs.release-id }}"
