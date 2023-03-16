@@ -1,6 +1,6 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Draft Release Notes'
+description: 'Create a draft release on GitHub based on release.yml'
+author: Luca Comellini <lucacome>
 inputs:
   github-token:
     description: 'GitHub Token as provided by secrets'
@@ -34,3 +34,7 @@ outputs:
 runs:
   using: 'node16'
   main: 'dist/index.js'
+
+branding:
+  icon: 'file-text'
+  color: 'green'
