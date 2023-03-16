@@ -1,5 +1,6 @@
 import * as github from '@actions/github'
 import * as semver from 'semver'
+import * as handlebars from 'handlebars'
 import {Inputs} from './context'
 
 export async function generateReleaseNotes(
@@ -17,14 +18,19 @@ export async function generateReleaseNotes(
   })
 
   let body = notes.data.body
+
+  // variables to replace in header and footer
+  const data = {
+    version: nextRelease,
+    'version-number': nextRelease.replace('v', ''),
+  }
+
   if (inputs.header) {
-    let header = replaceAll(inputs.header, '%TAG%', nextRelease)
-    header = replaceAll(header, '%TAG_STRIPPED%', nextRelease.replace('v', ''))
+    const header = handlebars.compile(inputs.header)(data)
     body = `${header}\n\n${body}`
   }
   if (inputs.footer) {
-    let footer = replaceAll(inputs.footer, '%TAG%', nextRelease)
-    footer = replaceAll(footer, '%TAG_STRIPPED%', nextRelease.replace('v', ''))
+    const footer = handlebars.compile(inputs.footer)(data)
     body = `${body}\n\n${footer}`
   }
 
@@ -41,8 +47,4 @@ export function parseNotes(notes: string, major: string, minor: string): string 
   !major ? notesType : (notesType = notes.includes(`### ${major}`) ? 'major' : notesType)
 
   return notesType
-}
-
-function replaceAll(str: string, find: string, replace: string): string {
-  return str.replace(new RegExp(find, 'g'), replace)
 }

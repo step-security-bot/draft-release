@@ -23,12 +23,12 @@ jobs:
         id: draft-release
         with:
           notes-header: |
-            ## Welcome to the %TAG% release of Draft Release
-              This is some text to welcome you to the release %TAG_STRIPPED%.
+            ## Welcome to the {{version}} release of Draft Release
+              This is some text to welcome you to the release {{version-number}}.
           notes-footer: |
             ## Upgrade
-            - For Docker, use the %TAG% image from Docker Hub.
-            - For Binaries use the %TAG_STRIPPED% release from GitHub.
+            - For Docker, use the {{version}} image from Docker Hub.
+            - For Binaries use the {{version-number}} release from GitHub.
 
       - run: |
           echo "Version: ${{ steps.draft-release.outputs.version }}"

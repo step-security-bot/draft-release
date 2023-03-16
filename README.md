@@ -20,7 +20,7 @@ jobs:
   draft-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: lucacome/draft-release@v0.1.0
         with:
           minor-label: 'enhancement'
@@ -47,6 +47,12 @@ jobs:
 | `release-notes` | `string` | The release notes of the next release. |
 | `release-url` | `string` | The URL of the next release. |
 
+## Header and Footer
+
+The header and footer have two special placeholders that will be replaced with the version number of the next release:
+- `{{version}}` will be replaced with the version number of the next release.
+- `{{version-number}}` will be replaced with the version number of the next release without the `v` prefix.
+
 ## Examples
 
 ### Add Footer
@@ -63,12 +69,14 @@ jobs:
   draft-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: lucacome/draft-release@v0.1.0
         with:
           minor-label: 'enhancement'
           major-label: 'change'
-          notes-footer: 'This is a footer.'
+          notes-footer: |
+            This is a footer.
+            It can be multiline.
 ```
 
 ### Get Version Number of Next Release
@@ -85,7 +93,7 @@ jobs:
   draft-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: lucacome/draft-release@v0.1.0
         id: draft-release
         with:
